@@ -1,0 +1,3253 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wish Craft — Luxury Birthday Card Studio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600&family=Great+Vibes&family=Sacramento&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+
+:root{
+  --bg:#f7f5f2;
+  --surface:rgba(255,255,255,.88);
+  --ink:#28231f;
+  --muted:#81776f;
+  --line:#e7dfd8;
+  --accent:#6366f1;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  padding:20px 14px 40px;
+  color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif;
+
+  background:
+    radial-gradient(circle at 10% 5%,#fff 0,transparent 28%),
+    linear-gradient(135deg,#f8fafc,#f1f5f9 52%,#e2e8f0);
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:520px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.glass{
+  background:var(--surface);
+  border:1px solid var(--line);
+  box-shadow:0 20px 50px rgba(15,23,42,.06);
+  backdrop-filter:blur(16px);
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  border-radius:50px;
+}
+
+.brand-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+
+  background:
+    linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);
+
+  box-shadow:0 5px 15px rgba(99,102,241,0.3);
+}
+
+.brand-name{
+  font-weight:800;
+  background:
+    linear-gradient(135deg,#4f46e5,#7c3aed,#db2777);
+
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.by{
+  font-size:.63rem;
+  color:var(--muted);
+  font-weight:700;
+  letter-spacing:.5px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  text-align:center;
+  padding:5px 8px 2px;
+}
+
+.kicker{
+  font-size:.65rem;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#4f46e5;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+h1{
+  font:600 2.15rem/1.12 'Playfair Display',serif;
+  color:#1e293b;
+}
+
+.hero p{
+  font-size:.79rem;
+  color:var(--muted);
+  line-height:1.5;
+  max-width:410px;
+  margin:8px auto 0;
+}
+
+/* =========================
+   PREVIEW
+========================= */
+
+.preview{
+  padding:16px;
+  border-radius:28px;
+}
+
+.preview-bar{
+  display:flex;
+  justify-content:space-between;
+  font-size:.68rem;
+  font-weight:700;
+  color:var(--muted);
+  padding:0 4px 12px;
+}
+
+.preview-bar b{
+  color:var(--ink);
+}
+
+/* White outer frame with added premium shadow */
+
+.export-wrapper{
+  background:#ffffff;
+  padding:14px;
+  border-radius:22px;
+
+  /* Added smooth premium shadow here as requested */
+  box-shadow:0 22px 45px rgba(15,23,42,0.12);
+
+  border:2px solid #ffffff;
+
+  /* Important for html2canvas */
+  position:relative;
+  overflow:hidden;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+  width:100%;
+  aspect-ratio:4/5;
+
+  border-radius:14px;
+
+  position:relative;
+  overflow:hidden;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
+  padding:35px 25px;
+
+  color:#334155;
+  background:#f8fafc;
+
+  /*
+    IMPORTANT:
+    Keep isolation, but all visual layers now use
+    positive z-index values.
+  */
+  isolation:isolate;
+
+  box-shadow:none !important;
+}
+
+/* =========================
+   FIXED WAVE LAYER
+========================= */
+
+.wave{
+  position:absolute;
+
+  inset:-4%;
+
+  width:108%;
+  height:108%;
+
+  z-index:0;
+
+  pointer-events:none;
+
+  display:block;
+
+  overflow:visible;
+}
+
+/* =========================
+   GRAIN
+========================= */
+
+.grain{
+  position:absolute;
+  inset:0;
+
+  z-index:1;
+
+  opacity:.15;
+
+  mix-blend-mode:multiply;
+
+  pointer-events:none;
+
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+}
+
+/* =========================
+   GLOW
+========================= */
+
+.glow{
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  background:#fffa;
+
+  filter:blur(40px);
+
+  z-index:2;
+
+  pointer-events:none;
+}
+
+.glow.one{
+  top:-75px;
+  left:-50px;
+}
+
+.glow.two{
+  bottom:-85px;
+  right:-60px;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  position:relative;
+
+  /*
+    Content stays above waves.
+  */
+  z-index:4;
+}
+
+/* =========================
+   STICKER
+========================= */
+
+.sticker{
+  font-size:2.2rem;
+  margin-bottom:4px;
+
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,0.12));
+
+  animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+  50%{
+    transform:translateY(-6px) rotate(3deg);
+  }
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.badge{
+  font-size:.56rem;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  font-weight:800;
+  opacity:.8;
+  margin-bottom:6px;
+}
+
+.card-title{
+  font-size:1.1rem;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:2px;
+}
+
+.name{
+  font:700 2.6rem/1.02 'Dancing Script',cursive;
+
+  margin:2px 0 8px;
+
+  max-width:100%;
+
+  overflow-wrap:anywhere;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   WISH BOX
+========================= */
+
+.wish-box{
+  width:100%;
+
+  background:rgba(255,255,255,0.75);
+
+  border:1px solid rgba(255,255,255,0.95);
+
+  backdrop-filter:blur(10px);
+
+  border-radius:14px;
+
+  padding:12px 14px;
+
+  margin:6px 0;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.03);
+
+  /*
+    Keeps the message above all background effects.
+  */
+  position:relative;
+  z-index:5;
+}
+
+.wish{
+  font-size:.77rem;
+  line-height:1.65;
+  opacity:.95;
+  white-space:pre-line;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider{
+  display:flex;
+  align-items:center;
+
+  gap:8px;
+
+  width:60%;
+
+  opacity:.4;
+
+  margin:4px 0;
+
+  font-size:.7rem;
+}
+
+.divider:before,
+.divider:after{
+  content:"";
+
+  height:1px;
+
+  flex:1;
+
+  background:currentColor;
+}
+
+/* =========================
+   FROM
+========================= */
+
+.from{
+  margin-top:10px;
+
+  font:
+    700 1.35rem 'Dancing Script',
+    cursive;
+
+  letter-spacing:.3px;
+
+  opacity:.95;
+}
+
+/* =========================
+   CORNER DECORATIONS
+========================= */
+
+.corner{
+  position:absolute;
+
+  font-size:1.4rem;
+
+  z-index:3;
+
+  filter:
+    drop-shadow(0 3px 5px rgba(0,0,0,0.12));
+
+  pointer-events:none;
+}
+
+.tl{
+  top:16px;
+  left:18px;
+}
+
+.tr{
+  top:16px;
+  right:18px;
+}
+
+.bl{
+  bottom:16px;
+  left:16px;
+}
+
+.br{
+  bottom:16px;
+  right:16px;
+}
+
+/* =========================
+   CONFETTI
+========================= */
+
+.confetti{
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  z-index:3;
+}
+
+.confetti i{
+  position:absolute;
+
+  width:5px;
+  height:9px;
+
+  border-radius:2px;
+
+  background:currentColor;
+
+  opacity:.55;
+
+  animation:fall 5s linear infinite;
+}
+
+.confetti i:nth-child(1){
+  left:18%;
+  top:8%;
+  transform:rotate(25deg);
+}
+
+.confetti i:nth-child(2){
+  left:78%;
+  top:15%;
+  animation-delay:1s;
+}
+
+.confetti i:nth-child(3){
+  left:10%;
+  top:65%;
+  animation-delay:2s;
+}
+
+.confetti i:nth-child(4){
+  left:88%;
+  top:72%;
+  animation-delay:.5s;
+}
+
+.confetti i:nth-child(5){
+  left:23%;
+  top:82%;
+  animation-delay:1.5s;
+}
+
+.confetti i:nth-child(6){
+  left:72%;
+  top:54%;
+  animation-delay:2.4s;
+}
+
+@keyframes fall{
+  50%{
+    transform:
+      translateY(12px)
+      rotate(100deg);
+  }
+}
+
+/* =========================
+   BORDERS
+========================= */
+
+.borders-indigo{
+  border:2px solid #6366f1;
+}
+
+.borders-blush{
+  border:1.5px solid #e0b1cb;
+}
+
+.borders-sage{
+  border:1.5px solid #9eb8a9;
+}
+
+.borders-minimal{
+  border:1px solid #334155;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.btn{
+  border:0;
+
+  border-radius:14px;
+
+  padding:13px 10px;
+
+  font-weight:800;
+  font-size:.78rem;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:7px;
+
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn.busy,
+.small-btn.busy{
+  opacity:.65;
+  pointer-events:none;
+}
+
+.primary{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6366f1,
+      #8b5cf6,
+      #ec4899
+    );
+
+  box-shadow:
+    0 8px 22px rgba(99,102,241,0.3);
+}
+
+.secondary{
+  background:#fff;
+
+  border:1px solid var(--line);
+
+  color:var(--ink);
+}
+
+.quick-share{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  margin-top:9px;
+}
+
+.small-btn{
+  border:1px solid var(--line);
+
+  background:#fff;
+
+  border-radius:12px;
+
+  padding:10px;
+
+  font-size:.7rem;
+
+  font-weight:700;
+
+  transition:.2s;
+}
+
+.small-btn:hover{
+  transform:translateY(-1px);
+
+  background:#fafafa;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form{
+  border-radius:28px;
+
+  padding:20px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:16px;
+}
+
+.section{
+  border:1px solid var(--line);
+
+  border-radius:16px;
+
+  background:#fff9;
+
+  padding:16px;
+}
+
+.section-title{
+  font-size:.75rem;
+
+  font-weight:800;
+
+  color:#1e293b;
+
+  margin-bottom:12px;
+
+  display:flex;
+  align-items:center;
+
+  gap:6px;
+}
+
+.section-body{
+  display:flex;
+  flex-direction:column;
+
+  gap:12px;
+}
+
+label{
+  font-size:.65rem;
+
+  font-weight:800;
+
+  color:var(--muted);
+
+  letter-spacing:.7px;
+
+  text-transform:uppercase;
+
+  display:block;
+
+  margin-bottom:6px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+
+  border:1px solid var(--line);
+
+  background:#fff;
+
+  padding:11px 12px;
+
+  border-radius:11px;
+
+  color:var(--ink);
+
+  outline:0;
+
+  font-size:.78rem;
+}
+
+textarea{
+  height:86px;
+
+  resize:vertical;
+
+  line-height:1.5;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#6366f1;
+
+  box-shadow:
+    0 0 0 3px rgba(99,102,241,0.15);
+}
+
+.row{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:9px;
+}
+
+/* =========================
+   CHIPS
+========================= */
+
+.chips{
+  display:flex;
+
+  gap:6px;
+
+  overflow:auto;
+
+  padding-bottom:2px;
+}
+
+.chips::-webkit-scrollbar{
+  display:none;
+}
+
+.chip{
+  white-space:nowrap;
+
+  border:1px solid var(--line);
+
+  background:#f7f7f8;
+
+  border-radius:20px;
+
+  padding:6px 10px;
+
+  font-size:.64rem;
+
+  font-weight:700;
+
+  color:var(--muted);
+}
+
+.chip.active,
+.chip:hover{
+  background:#eef2ff;
+
+  border-color:#6366f1;
+
+  color:#4f46e5;
+}
+
+/* =========================
+   TEMPLATE TABS
+========================= */
+
+.theme-tabs{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:6px;
+
+  margin-bottom:10px;
+}
+
+.tab{
+  border:1px solid var(--line);
+
+  background:#fff;
+
+  border-radius:9px;
+
+  padding:7px 2px;
+
+  font-size:.6rem;
+
+  font-weight:800;
+
+  color:var(--muted);
+}
+
+.tab.active{
+  background:#eef2ff;
+
+  border-color:#6366f1;
+
+  color:#4f46e5;
+}
+
+/* =========================
+   THEMES
+========================= */
+
+.themes{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:7px;
+}
+
+.theme{
+  height:68px;
+
+  border:2px solid transparent;
+
+  border-radius:11px;
+
+  position:relative;
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  box-shadow:
+    inset 0 0 0 1px #ffffff88;
+
+  transition:.2s;
+}
+
+.theme.selected{
+  border-color:#fff;
+
+  outline:2px solid #6366f1;
+
+  transform:translateY(-1px);
+}
+
+.theme .mini-wave{
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+}
+
+.theme span{
+  position:absolute;
+
+  bottom:5px;
+
+  left:5px;
+  right:5px;
+
+  text-align:left;
+
+  color:#fff;
+
+  font-size:.55rem;
+
+  font-weight:800;
+
+  text-shadow:
+    0 1px 4px #0008;
+}
+
+.check{
+  position:absolute;
+
+  right:5px;
+  top:5px;
+
+  background:#fff;
+
+  color:#6366f1;
+
+  border-radius:50%;
+
+  width:17px;
+  height:17px;
+
+  display:none;
+
+  place-items:center;
+
+  font-size:.55rem;
+}
+
+.theme.selected .check{
+  display:grid;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer-card{
+  text-align:center;
+
+  border-radius:16px;
+
+  padding:14px;
+
+  font-size:.68rem;
+
+  color:var(--muted);
+}
+
+.footer-card a{
+  color:#4f46e5;
+
+  text-decoration:none;
+
+  font-weight:800;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:22px;
+
+  transform:
+    translate(-50%,20px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  background:#1e293b;
+
+  color:#fff;
+
+  padding:11px 16px;
+
+  border-radius:30px;
+
+  font-size:.72rem;
+
+  font-weight:700;
+
+  transition:.3s;
+
+  z-index:99;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  position:fixed;
+
+  inset:0;
+
+  background:#fff9;
+
+  backdrop-filter:blur(7px);
+
+  display:none;
+
+  place-items:center;
+
+  z-index:100;
+}
+
+.loading.show{
+  display:grid;
+}
+
+.loader-box{
+  background:#fff;
+
+  padding:20px 24px;
+
+  border-radius:18px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.1);
+
+  text-align:center;
+
+  font-size:.8rem;
+
+  font-weight:800;
+}
+
+.spin{
+  margin:auto auto 8px;
+
+  width:28px;
+  height:28px;
+
+  border:3px solid #ddd;
+
+  border-top-color:#6366f1;
+
+  border-radius:50%;
+
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================
+   SMALL SCREENS
+========================= */
+
+@media(max-width:370px){
+
+  .themes{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+  h1{
+    font-size:1.9rem;
+  }
+
+  .name{
+    font-size:2.1rem;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- BRAND -->
+
+  <header class="brand glass">
+
+    <div class="brand-left">
+
+      <div class="logo">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </div>
+
+      <div class="brand-name">
+        Wish Craft
+      </div>
+
+    </div>
+
+    <div class="by">
+      BY UNAVAILABLE.PRSN
+    </div>
+
+  </header>
+
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="kicker">
+      ✦ Professional Birthday Card Studio ✦
+    </div>
+
+    <h1>
+      Make your wish magical.
+    </h1>
+
+    <p>
+      Create an ultra-special, professional greeting in seconds.
+    </p>
+
+  </section>
+
+
+  <!-- PREVIEW -->
+
+  <section class="preview glass">
+
+    <div class="preview-bar">
+
+      <b>
+        Live Preview
+      </b>
+
+      <span>
+        HD Padded • 4 : 5 Ratio
+      </span>
+
+    </div>
+
+
+    <!-- EXPORT WRAPPER -->
+
+    <div id="exportWrapper" class="export-wrapper">
+
+      <!-- CARD -->
+
+      <div id="captureCard" class="card borders-indigo">
+
+        <!-- WAVES -->
+
+        <svg
+          class="wave"
+          viewBox="0 0 400 500"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+
+          <path
+            id="wave1"
+            d="M0,0 C160,60 80,180 0,300 Z"
+            fill="#e0e7ff"
+            opacity=".8"
+          />
+
+          <path
+            id="wave2"
+            d="M400,500 C240,440 320,320 400,190 Z"
+            fill="#c7d2fe"
+            opacity=".85"
+          />
+
+          <path
+            id="wave3"
+            d="M0,500 C90,440 150,420 205,500 Z"
+            fill="#fff"
+            opacity=".5"
+          />
+
+        </svg>
+
+
+        <!-- GRAIN -->
+
+        <div class="grain"></div>
+
+
+        <!-- GLOW -->
+
+        <div class="glow one"></div>
+        <div class="glow two"></div>
+
+
+        <!-- CORNER DECORATIONS -->
+
+        <div class="corner tl" id="decoTL">
+          🌸
+        </div>
+
+        <div class="corner tr" id="decoTR">
+          ✨
+        </div>
+
+        <div class="corner bl" id="decoBL">
+          💖
+        </div>
+
+        <div class="corner br" id="decoBR">
+          🌷
+        </div>
+
+
+        <!-- CONFETTI -->
+
+        <div class="confetti" id="confetti">
+
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+
+        </div>
+
+
+        <!-- MAIN CONTENT -->
+
+        <div class="content">
+
+          <div class="sticker" id="displaySticker">
+            🎂
+          </div>
+
+          <div class="badge" id="displayBadge">
+            ♥ Special Birthday Wish ♥
+          </div>
+
+          <div class="card-title" id="displayGreeting">
+            Happy Birthday
+          </div>
+
+          <div class="name" id="displayName">
+            Your Name
+          </div>
+
+          <div class="divider">
+            ✦
+          </div>
+
+
+          <!-- WISH -->
+
+          <div class="wish-box">
+
+            <p class="wish" id="displayWish">
+              Aapki zindagi khushiyon aur roshni se bhari rahe. Har din aapke liye nayi kamyaabi aur dher saara pyaar lekar aaye. Happy Birthday! 💫
+            </p>
+
+          </div>
+
+
+          <!-- FROM -->
+
+          <div class="from" id="displayFrom">
+            By Someone Special
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ACTIONS -->
+
+  <section>
+
+    <div class="actions">
+
+      <button
+        class="btn primary"
+        onclick="downloadCard()"
+      >
+
+        <i class="fa-solid fa-download"></i>
+
+        Download HD
+
+      </button>
+
+
+      <button
+        class="btn secondary"
+        onclick="shareCard()"
+      >
+
+        <i class="fa-solid fa-share-nodes"></i>
+
+        Share Card
+
+      </button>
+
+    </div>
+
+
+    <div class="quick-share">
+
+      <button
+        class="small-btn"
+        onclick="shareWhatsApp()"
+      >
+
+        <i
+          class="fa-brands fa-whatsapp"
+          style="color:#25D366;"
+        ></i>
+
+        WhatsApp
+
+      </button>
+
+
+      <button
+        class="small-btn"
+        onclick="copyCardText()"
+      >
+
+        <i class="fa-regular fa-copy"></i>
+
+        Copy Message
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- FORM -->
+
+  <section class="form glass">
+
+
+    <!-- CONTENT -->
+
+    <div class="section">
+
+      <div class="section-title">
+        ✦ Content & Personalization
+      </div>
+
+      <div class="section-body">
+
+
+        <div>
+
+          <label>
+            Recipient Name
+          </label>
+
+          <input
+            id="nameInput"
+            value="Your Name"
+            placeholder="Enter name..."
+            oninput="updateContent()"
+          >
+
+        </div>
+
+
+        <div class="row">
+
+
+          <div>
+
+            <label>
+              Age (Optional)
+            </label>
+
+            <input
+              id="ageInput"
+              inputmode="numeric"
+              placeholder="e.g. 21"
+              oninput="updateContent()"
+            >
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Sender
+            </label>
+
+            <input
+              id="fromInput"
+              value="Someone Special"
+              placeholder="Your name..."
+              oninput="updateContent()"
+            >
+
+          </div>
+
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Relationship
+          </label>
+
+          <select
+            id="relationSelect"
+            onchange="updateContent()"
+          >
+
+            <option value="">
+              Special Person
+            </option>
+
+            <option>
+              Best Friend
+            </option>
+
+            <option>
+              Sister
+            </option>
+
+            <option>
+              Brother
+            </option>
+
+            <option>
+              Mom
+            </option>
+
+            <option>
+              Dad
+            </option>
+
+            <option>
+              Partner
+            </option>
+
+            <option>
+              Crush
+            </option>
+
+            <option>
+              Colleague
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Birthday Message
+          </label>
+
+          <textarea
+            id="wishInput"
+            oninput="updateContent()"
+          >Aapki zindagi khushiyon aur roshni se bhari rahe. Har din aapke liye nayi kamyaabi aur dher saara pyaar lekar aaye. Happy Birthday! 💫</textarea>
+
+
+          <div
+            class="chips"
+            id="presetChips"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- TYPOGRAPHY -->
+
+    <div class="section">
+
+      <div class="section-title">
+        ✦ Typography & Sticker
+      </div>
+
+      <div class="section-body">
+
+
+        <div>
+
+          <label>
+            Name Font
+          </label>
+
+          <select
+            id="fontSelect"
+            onchange="updateFont()"
+          >
+
+            <option
+              value="'Dancing Script', cursive"
+              selected
+            >
+              Dancing Script — Signature
+            </option>
+
+            <option
+              value="'Playfair Display', serif"
+            >
+              Playfair Display — Elegant
+            </option>
+
+            <option
+              value="'Great Vibes', cursive"
+            >
+              Great Vibes — Luxurious
+            </option>
+
+            <option
+              value="'Cinzel', serif"
+            >
+              Cinzel — Royal
+            </option>
+
+            <option
+              value="'Poppins', sans-serif"
+            >
+              Poppins — Modern
+            </option>
+
+            <option
+              value="'Sacramento', cursive"
+            >
+              Sacramento — Handwritten
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Central Sticker
+          </label>
+
+          <select
+            id="stickerSelect"
+            onchange="updateSticker()"
+          >
+
+            <option
+              value="🎂"
+              selected
+            >
+              🎂 Birthday Cake
+            </option>
+
+            <option value="❤️">
+              ❤️ Sparkling Heart
+            </option>
+
+            <option value="🌸">
+              🌸 Cherry Blossom
+            </option>
+
+            <option value="✨">
+              ✨ Magic Stars
+            </option>
+
+            <option value="🥂">
+              🥂 Celebration Cheers
+            </option>
+
+            <option value="🎉">
+              🎉 Party Popper
+            </option>
+
+            <option value="none">
+              🚫 No Sticker
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- DECORATIONS -->
+
+    <div class="section">
+
+      <div class="section-title">
+        ✦ Decorations & Border
+      </div>
+
+      <div class="section-body">
+
+
+        <div>
+
+          <label>
+            Card Border Style
+          </label>
+
+          <select
+            id="borderSelect"
+            onchange="updateBorder()"
+          >
+
+            <option
+              value="indigo"
+              selected
+            >
+              ✨ Modern Indigo
+            </option>
+
+            <option value="blush">
+              🌸 Soft Blush
+            </option>
+
+            <option value="sage">
+              🌿 Pastel Sage
+            </option>
+
+            <option value="minimal">
+              🖋️ Minimal Dark
+            </option>
+
+            <option value="none">
+              Clean — No Border
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Corner Decorations
+          </label>
+
+          <select
+            id="decorSelect"
+            onchange="updateDecor()"
+          >
+
+            <option value="auto">
+              ✨ Auto — Match Theme
+            </option>
+
+            <option value="flowers">
+              🌸 Floral
+            </option>
+
+            <option value="stars">
+              ✨ Celestial
+            </option>
+
+            <option value="party">
+              🎉 Celebration
+            </option>
+
+            <option value="minimal">
+              🤍 Minimal
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- THEMES -->
+
+    <div class="section">
+
+      <div class="section-title">
+        ✦ Professional Templates (20)
+      </div>
+
+      <div class="section-body">
+
+
+        <div class="theme-tabs">
+
+          <button
+            class="tab active"
+            data-filter="all"
+            onclick="filterCategory('all',this)"
+          >
+            All (20)
+          </button>
+
+          <button
+            class="tab"
+            data-filter="floral"
+            onclick="filterCategory('floral',this)"
+          >
+            🌸 Floral
+          </button>
+
+          <button
+            class="tab"
+            data-filter="nature"
+            onclick="filterCategory('nature',this)"
+          >
+            🌿 Nature
+          </button>
+
+          <button
+            class="tab"
+            data-filter="modern"
+            onclick="filterCategory('modern',this)"
+          >
+            💼 Modern
+          </button>
+
+        </div>
+
+
+        <div
+          class="themes"
+          id="themeGrid"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer-card glass">
+
+    Designed with ❤️ by
+
+    <a
+      href="https://instagram.com/unavailablesyr"
+      target="_blank"
+      rel="noopener"
+    >
+      @unavailable.prsn
+    </a>
+
+  </footer>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<!-- LOADING -->
+
+<div
+  class="loading"
+  id="loading"
+>
+
+  <div class="loader-box">
+
+    <div class="spin"></div>
+
+    <span id="loadingText">
+      Creating your HD card...
+    </span>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   WISH PRESETS
+========================================== */
+
+const wishes = [
+
+  "Aapki zindagi khushiyon aur roshni se bhari rahe. Har din aapke liye nayi kamyaabi aur dher saara pyaar lekar aaye. Happy Birthday! 💫",
+
+  "Dua hai ki aapki har khwahish bina maange poori ho jaye. Aapka ye saal dher saari khushiyan laye. Janamdin ki shubhkaamnayein! 🌸",
+
+  "May your day be absolute magic and your year ahead overflow with endless blessings and success. Happy Birthday! 🎉",
+
+  "Bhagwan se yahi prarthana hai ki aapka har din muskurahaton se bhara ho. Wishing you a wonderful Birthday! ❤️",
+
+  "Zindagi ke safar mein aapko wo sab mile jo aapka dil chahta hai. Have an incredible Birthday filled with love! 🔥"
+
+];
+
+
+/* ==========================================
+   THEMES
+========================================== */
+
+const themes = [
+
+  ["Modern Indigo","#f8fafc","#e0e7ff","#c7d2fe","#334155","🌸","✨","💖","🌷","modern"],
+
+  ["Blush Garden","#fff5f7","#f9a8d4","#fce7f3","#9d174d","🌸","💖","🌷","✨","floral"],
+
+  ["Rose Romance","#fff1f2","#fda4af","#f43f5e","#881337","🌹","✨","💖","🌸","floral"],
+
+  ["Lavender Dream","#faf5ff","#d8b4fe","#f3e8ff","#6b21a8","✨","💜","🌷","💫","floral"],
+
+  ["Sage Serenity","#f0fdf4","#bbf7d0","#dcfce7","#166534","🌿","🍃","🍀","✨","nature"],
+
+  ["Violet Moon","#f5f3ff","#c4b5fd","#ede9fe","#4c1d95","💫","🌙","✨","⭐","modern"],
+
+  ["Pearl Minimal","#fafaf9","#d6d3d1","#e7e5e4","#292524","🖋️","✨","🤍","✦","modern"],
+
+  ["Sunset Party","#fff7ed","#fed7aa","#ffedd5","#c2410c","🔥","🎉","🎈","✨","modern"],
+
+  ["Ocean Mist","#ecfeff","#a5f3fc","#cffafe","#155e75","💧","🌊","🐚","✨","nature"],
+
+  ["Orchid Bloom","#fdf4ff","#f0abfc","#fae8ff","#86198f","🌷","💖","🌸","✨","floral"],
+
+  ["Silver Star","#f8fafc","#cbd5e1","#e2e8f0","#334155","⭐","💫","🤍","✨","modern"],
+
+  ["Birthday Peach","#fff7ed","#ffedd5","#fed7aa","#9a3412","🎂","🎉","🍑","✨","modern"],
+
+  ["Mint Meadow","#f0fdfa","#99f6e4","#ccfbf1","#115e59","🍀","🌿","🌱","✨","nature"],
+
+  ["Pink Petals","#fff7fb","#fbcfe8","#fce7f3","#9d174d","🌸","💖","🌷","🦋","floral"],
+
+  ["Celestial Lilac","#f5f3ff","#ddd6fe","#ede9fe","#5b21b6","✨","🌟","🌙","💫","modern"],
+
+  ["Ruby Celebration","#fff1f2","#f43f5e","#ffe4e6","#881337","❤️","🔥","🎉","✨","floral"],
+
+  ["Sky Balloon","#f0f9ff","#7dd3fc","#e0f2fe","#075985","🎈","🎉","☁️","✨","nature"],
+
+  ["Warm Ink","#fafaf9","#a8a29e","#d6d3d1","#1c1917","✨","🖋️","🤍","✦","modern"],
+
+  ["Emerald Forest","#ecfdf5","#a7f3d0","#6ee7b7","#065f46","🌿","🍃","🌱","✨","nature"],
+
+  ["Slate Elegance","#f1f5f9","#cbd5e1","#94a3b8","#0f172a","✨","🌙","💫","⭐","modern"]
+
+];
+
+
+let active = 0;
+
+
+/* ==========================================
+   SHORTCUT
+========================================== */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+/* ==========================================
+   TOAST
+========================================== */
+
+function toast(msg){
+
+  const t = $('toast');
+
+  t.textContent = msg;
+
+  t.classList.add('show');
+
+  setTimeout(() => {
+
+    t.classList.remove('show');
+
+  },2600);
+
+}
+
+
+/* ==========================================
+   INITIALIZE
+========================================== */
+
+function init(){
+
+  wishes.forEach((w,i)=>{
+
+    const c = document.createElement('button');
+
+    c.className = 'chip';
+
+    c.textContent = `Wish ${i+1}`;
+
+    c.onclick = () => {
+
+      $('wishInput').value = w;
+
+      updateContent();
+
+    };
+
+    $('presetChips').appendChild(c);
+
+  });
+
+
+  renderThemes('all');
+
+  setTheme(0);
+
+  updateContent();
+
+  updateFont();
+
+  updateBorder();
+
+  updateDecor();
+
+}
+
+
+/* ==========================================
+   RENDER THEMES
+========================================== */
+
+function renderThemes(filter='all'){
+
+  const grid = $('themeGrid');
+
+  grid.innerHTML = '';
+
+
+  themes.forEach((t,i)=>{
+
+    if(
+      filter !== 'all' &&
+      t[9] !== filter
+    ){
+      return;
+    }
+
+
+    const el =
+      document.createElement('div');
+
+
+    el.className =
+      'theme' +
+      (i === active ? ' selected' : '');
+
+
+    el.style.background =
+      `linear-gradient(145deg,${t[1]},${t[2]})`;
+
+
+    el.innerHTML = `
+
+      <svg
+        class="mini-wave"
+        viewBox="0 0 100 70"
+        preserveAspectRatio="none"
+      >
+
+        <path
+          d="M0 0 C45 8 20 35 0 58Z"
+          fill="${t[2]}"
+          opacity=".9"
+        />
+
+        <path
+          d="M100 70 C60 58 78 30 100 15Z"
+          fill="${t[3]}"
+          opacity=".95"
+        />
+
+      </svg>
+
+      <span>
+        ${i+1}. ${t[0].split(' ')[0]}
+      </span>
+
+      <b class="check">
+        ✓
+      </b>
+
+    `;
+
+
+    el.onclick = () => {
+
+      setTheme(i);
+
+    };
+
+
+    grid.appendChild(el);
+
+  });
+
+}
+
+
+/* ==========================================
+   FILTER CATEGORY
+========================================== */
+
+function filterCategory(filter,el){
+
+  document
+    .querySelectorAll('.tab')
+    .forEach(x =>
+      x.classList.remove('active')
+    );
+
+
+  el.classList.add('active');
+
+
+  renderThemes(filter);
+
+}
+
+
+/* ==========================================
+   SET THEME
+========================================== */
+
+function setTheme(i){
+
+  active = i;
+
+  const t = themes[i];
+
+  const card = $('captureCard');
+
+
+  card.style.background = t[1];
+
+  card.style.color = t[4];
+
+
+  $('wave1')
+    .setAttribute('fill',t[2]);
+
+  $('wave2')
+    .setAttribute('fill',t[3]);
+
+  $('wave3')
+    .setAttribute('fill','#fff');
+
+
+  $('decoTL').textContent = t[5];
+
+  $('decoTR').textContent = t[6];
+
+  $('decoBL').textContent = t[7];
+
+  $('decoBR').textContent = t[8];
+
+
+  renderThemes(
+    document
+      .querySelector('.tab.active')
+      ?.dataset.filter || 'all'
+  );
+
+
+  updateDecor();
+
+}
+
+
+/* ==========================================
+   UPDATE CONTENT
+========================================== */
+
+function updateContent(){
+
+  const name =
+    $('nameInput').value.trim()
+    || 'Your Name';
+
+
+  const age =
+    $('ageInput').value.trim();
+
+
+  const from =
+    $('fromInput').value.trim()
+    || 'Someone Special';
+
+
+  const wish =
+    $('wishInput').value.trim()
+    || 'Happy Birthday!';
+
+
+  const relation =
+    $('relationSelect').value;
+
+
+  $('displayName').textContent =
+    name;
+
+
+  $('displayWish').textContent =
+    wish;
+
+
+  $('displayFrom').textContent =
+    `By ${from}`;
+
+
+  if(age){
+
+    $('displayGreeting').textContent =
+      `Happy ${ordinal(age)} Birthday`;
+
+  }else{
+
+    $('displayGreeting').textContent =
+      'Happy Birthday';
+
+  }
+
+
+  if(relation){
+
+    $('displayBadge').textContent =
+      `♥ For My ${relation} ♥`;
+
+  }else{
+
+    $('displayBadge').textContent =
+      '♥ Special Birthday Wish ♥';
+
+  }
+
+}
+
+
+/* ==========================================
+   ORDINAL
+========================================== */
+
+function ordinal(n){
+
+  n = Number(n);
+
+  if(!Number.isFinite(n)){
+    return n;
+  }
+
+
+  const v = n % 100;
+
+
+  if(v >= 11 && v <= 13){
+
+    return n + 'th';
+
+  }
+
+
+  return n +
+    (
+      n % 10 === 1
+      ? 'st'
+      : n % 10 === 2
+      ? 'nd'
+      : n % 10 === 3
+      ? 'rd'
+      : 'th'
+    );
+
+}
+
+
+/* ==========================================
+   UPDATE FONT
+========================================== */
+
+function updateFont(){
+
+  const font =
+    $('fontSelect').value;
+
+
+  $('displayName').style.fontFamily =
+    font;
+
+}
+
+
+/* ==========================================
+   UPDATE STICKER
+========================================== */
+
+function updateSticker(){
+
+  const v =
+    $('stickerSelect').value;
+
+
+  const s =
+    $('displaySticker');
+
+
+  if(v === 'none'){
+
+    s.style.display = 'none';
+
+  }else{
+
+    s.style.display = 'block';
+
+    s.textContent = v;
+
+  }
+
+}
+
+
+/* ==========================================
+   UPDATE BORDER
+========================================== */
+
+function updateBorder(){
+
+  const c =
+    $('captureCard');
+
+
+  c.classList.remove(
+    'borders-indigo',
+    'borders-blush',
+    'borders-sage',
+    'borders-minimal'
+  );
+
+
+  const v =
+    $('borderSelect').value;
+
+
+  if(v !== 'none'){
+
+    c.classList.add(
+      'borders-' + v
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   UPDATE DECOR
+========================================== */
+
+function updateDecor(){
+
+  const v =
+    $('decorSelect').value;
+
+
+  const t =
+    themes[active];
+
+
+  const map = {
+
+    flowers:[
+      '🌸',
+      '🌷',
+      '🌸',
+      '💖'
+    ],
+
+    stars:[
+      '✨',
+      '🌟',
+      '💫',
+      '⭐'
+    ],
+
+    party:[
+      '🎉',
+      '🎈',
+      '🎂',
+      '✨'
+    ],
+
+    minimal:[
+      '',
+      '✦',
+      '',
+      '✦'
+    ]
+
+  };
+
+
+  const a =
+    v === 'auto'
+      ? [t[5],t[6],t[7],t[8]]
+      : map[v];
+
+
+  [
+    'decoTL',
+    'decoTR',
+    'decoBL',
+    'decoBR'
+  ]
+  .forEach((id,i)=>{
+
+    $(id).textContent =
+      a[i] || '';
+
+  });
+
+
+  $('confetti').style.display =
+    (
+      v === 'party' ||
+      (
+        v === 'auto' &&
+        t[9] === 'modern'
+      )
+    )
+      ? 'block'
+      : 'none';
+
+}
+
+
+/* ==========================================
+   SAFE FILE NAME
+========================================== */
+
+function safeFileName(s){
+
+  return s
+    .replace(
+      /[<>:"/\\|?*\x00-\x1F]/g,
+      ''
+    )
+    .trim()
+    .slice(0,50)
+    ||
+    'Birthday-Card';
+
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+function setLoading(
+  on,
+  text='Creating your HD card...'
+){
+
+  $('loadingText').textContent =
+    text;
+
+
+  $('loading').classList.toggle(
+    'show',
+    on
+  );
+
+}
+
+
+/* ==========================================
+   MAKE CANVAS
+========================================== */
+
+async function makeCanvas(scale=3){
+
+  const wrapper =
+    $('exportWrapper');
+
+
+  /*
+    Make sure latest content is rendered
+    before capture.
+  */
+
+  updateContent();
+
+  updateFont();
+
+  updateBorder();
+
+  updateDecor();
+
+
+  /*
+    Wait for Google fonts.
+  */
+
+  if(document.fonts){
+
+    await document.fonts.ready;
+
+  }
+
+
+  /*
+    Small delay allows browser to finish
+    painting SVG/background layers.
+  */
+
+  await new Promise(
+    resolve =>
+      setTimeout(resolve,180)
+  );
+
+
+  /*
+    IMPORTANT:
+
+    onclone runs on html2canvas's cloned DOM.
+
+    We explicitly force the wave to z-index:0
+    so it can never fall behind the card's
+    background during PNG rendering.
+  */
+
+  const canvas =
+    await html2canvas(
+      wrapper,
+      {
+
+        scale:scale,
+
+        useCORS:true,
+
+        allowTaint:false,
+
+        backgroundColor:'#ffffff',
+
+        logging:false,
+
+        imageTimeout:20000,
+
+        removeContainer:false,
+
+        /*
+          Keep SVG/background rendering in the
+          normal DOM rendering path.
+        */
+        foreignObjectRendering:false,
+
+
+        onclone:function(clonedDoc){
+
+          const clonedWrapper =
+            clonedDoc.getElementById(
+              'exportWrapper'
+            );
+
+
+          const clonedCard =
+            clonedDoc.getElementById(
+              'captureCard'
+            );
+
+
+          const clonedWave =
+            clonedDoc.querySelector(
+              '.wave'
+            );
+
+
+          if(clonedWrapper){
+
+            clonedWrapper.style.background =
+              '#ffffff';
+
+            clonedWrapper.style.overflow =
+              'hidden';
+
+          }
+
+
+          if(clonedCard){
+
+            clonedCard.style.position =
+              'relative';
+
+            clonedCard.style.isolation =
+              'isolate';
+
+          }
+
+
+          /*
+            THE IMPORTANT PART
+          */
+
+          if(clonedWave){
+
+            clonedWave.style.position =
+              'absolute';
+
+            clonedWave.style.zIndex =
+              '0';
+
+            clonedWave.style.display =
+              'block';
+
+            clonedWave.style.visibility =
+              'visible';
+
+            clonedWave.style.opacity =
+              '1';
+
+            clonedWave.style.pointerEvents =
+              'none';
+
+          }
+
+
+          /*
+            Force all other layers to remain
+            above the SVG.
+          */
+
+          const grain =
+            clonedDoc.querySelector(
+              '.grain'
+            );
+
+          if(grain){
+
+            grain.style.zIndex =
+              '1';
+
+          }
+
+
+          clonedDoc
+            .querySelectorAll('.glow')
+            .forEach(el=>{
+
+              el.style.zIndex =
+                '2';
+
+            });
+
+
+          clonedDoc
+            .querySelectorAll('.corner')
+            .forEach(el=>{
+
+              el.style.zIndex =
+                '3';
+
+            });
+
+
+          const confetti =
+            clonedDoc.getElementById(
+              'confetti'
+            );
+
+          if(confetti){
+
+            confetti.style.zIndex =
+              '3';
+
+          }
+
+
+          const content =
+            clonedDoc.querySelector(
+              '.content'
+            );
+
+          if(content){
+
+            content.style.zIndex =
+              '4';
+
+          }
+
+
+          const wishBox =
+            clonedDoc.querySelector(
+              '.wish-box'
+            );
+
+          if(wishBox){
+
+            wishBox.style.position =
+              'relative';
+
+            wishBox.style.zIndex =
+              '5';
+
+          }
+
+        }
+
+      }
+    );
+
+
+  return canvas;
+
+}
+
+
+/* ==========================================
+   CANVAS TO BLOB
+========================================== */
+
+function canvasToBlob(canvas){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      canvas.toBlob(
+        b =>
+          b
+            ? resolve(b)
+            : reject(
+                new Error(
+                  'PNG creation failed'
+                )
+              ),
+
+        'image/png',
+
+        1
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   GET SHARE FILE
+========================================== */
+
+async function getShareFile(){
+
+  const canvas =
+    await makeCanvas(3);
+
+
+  const blob =
+    await canvasToBlob(canvas);
+
+
+  return new File(
+    [blob],
+    'WishCraft-Birthday-Card.png',
+    {
+      type:'image/png'
+    }
+  );
+
+}
+
+
+/* ==========================================
+   DOWNLOAD CARD
+========================================== */
+
+async function downloadCard(){
+
+  const btn =
+    document.querySelector(
+      '.primary'
+    );
+
+
+  try{
+
+    btn.classList.add('busy');
+
+
+    setLoading(
+      true,
+      'Creating HD card...'
+    );
+
+
+    /*
+      4x = high resolution.
+      Waves are now part of the normal
+      positive stacking context.
+    */
+
+    const canvas =
+      await makeCanvas(4);
+
+
+    const name =
+      $('nameInput').value
+      || 'Card';
+
+
+    const link =
+      document.createElement('a');
+
+
+    link.download =
+      `WishCraft-${safeFileName(name)}.png`;
+
+
+    link.href =
+      canvas.toDataURL(
+        'image/png'
+      );
+
+
+    document.body.appendChild(link);
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    toast(
+      'HD card saved ✨'
+    );
+
+
+  }catch(e){
+
+    console.error(e);
+
+
+    toast(
+      'Download failed. Please try again.'
+    );
+
+
+  }finally{
+
+    btn.classList.remove('busy');
+
+    setLoading(false);
+
+  }
+
+}
+
+
+/* ==========================================
+   SHARE CARD
+========================================== */
+
+async function shareCard(){
+
+  const btn =
+    document.querySelectorAll(
+      '.actions .btn'
+    )[1];
+
+
+  try{
+
+    btn.classList.add('busy');
+
+
+    setLoading(
+      true,
+      'Preparing your card...'
+    );
+
+
+    const file =
+      await getShareFile();
+
+
+    const name =
+      $('nameInput')
+        .value
+        .trim()
+      || 'Your Name';
+
+
+    const text =
+      `🎂 Happy Birthday ${name}!`;
+
+
+    if(navigator.share){
+
+      try{
+
+        if(
+          navigator.canShare &&
+          navigator.canShare({
+            files:[file]
+          })
+        ){
+
+          await navigator.share({
+
+            title:
+              'Wish Craft Birthday Card',
+
+            text:text,
+
+            files:[file]
+
+          });
+
+
+          toast(
+            'Shared successfully ✨'
+          );
+
+        }else{
+
+          await navigator.share({
+
+            title:
+              'Wish Craft Birthday Card',
+
+            text:text
+
+          });
+
+
+          toast(
+            'Share sheet opened'
+          );
+
+        }
+
+
+      }catch(err){
+
+        if(
+          err.name !==
+          'AbortError'
+        ){
+
+          await fallbackDownload(
+            file,
+            'WishCraft-Birthday-Card.png'
+          );
+
+
+          toast(
+            'Image downloaded — share manually'
+          );
+
+        }
+
+      }
+
+    }else{
+
+      await fallbackDownload(
+        file,
+        'WishCraft-Birthday-Card.png'
+      );
+
+
+      toast(
+        'Image downloaded — sharing not supported here'
+      );
+
+    }
+
+
+  }catch(e){
+
+    if(
+      e &&
+      e.name !== 'AbortError'
+    ){
+
+      console.error(e);
+
+      toast(
+        'Could not share the card'
+      );
+
+    }
+
+
+  }finally{
+
+    btn.classList.remove('busy');
+
+    setLoading(false);
+
+  }
+
+}
+
+
+/* ==========================================
+   WHATSAPP
+========================================== */
+
+async function shareWhatsApp(){
+
+  const btn =
+    document.querySelectorAll(
+      '.small-btn'
+    )[0];
+
+
+  try{
+
+    btn.classList.add('busy');
+
+
+    setLoading(
+      true,
+      'Preparing WhatsApp card...'
+    );
+
+
+    const file =
+      await getShareFile();
+
+
+    const name =
+      $('nameInput')
+        .value
+        .trim()
+      || 'Your Name';
+
+
+    const wish =
+      $('wishInput')
+        .value
+        .trim()
+      || 'Happy Birthday!';
+
+
+    const from =
+      $('fromInput')
+        .value
+        .trim()
+      || 'Someone Special';
+
+
+    const text =
+      `🎂 Happy Birthday ${name}!\n\n${wish}\n\nBy ${from}`;
+
+
+    /*
+      On supported mobile browsers,
+      native share can send the actual
+      PNG file.
+    */
+
+    if(
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({
+        files:[file]
+      })
+    ){
+
+      try{
+
+        await navigator.share({
+
+          title:
+            'Birthday Card',
+
+          text:text,
+
+          files:[file]
+
+        });
+
+
+        toast(
+          'Shared to WhatsApp ✨'
+        );
+
+
+        return;
+
+      }catch(err){
+
+        if(
+          err.name ===
+          'AbortError'
+        ){
+
+          return;
+
+        }
+
+      }
+
+    }
+
+
+    /*
+      Fallback:
+      save image first and open WhatsApp.
+    */
+
+    await fallbackDownload(
+      file,
+      'WishCraft-Birthday-Card.png'
+    );
+
+
+    const waUrl =
+      'https://wa.me/?text=' +
+      encodeURIComponent(
+        text +
+        '\n\n📎 Card image saved to your device — please attach it in WhatsApp.'
+      );
+
+
+    window.open(
+      waUrl,
+      '_blank',
+      'noopener,noreferrer'
+    );
+
+
+    toast(
+      'Card saved + WhatsApp opened'
+    );
+
+
+  }catch(e){
+
+    if(
+      e &&
+      e.name !== 'AbortError'
+    ){
+
+      console.error(e);
+
+      toast(
+        'WhatsApp sharing failed'
+      );
+
+    }
+
+  }finally{
+
+    btn.classList.remove('busy');
+
+    setLoading(false);
+
+  }
+
+}
+
+
+/* ==========================================
+   FALLBACK DOWNLOAD
+========================================== */
+
+async function fallbackDownload(
+  file,
+  filename
+){
+
+  const url =
+    URL.createObjectURL(file);
+
+
+  const a =
+    document.createElement('a');
+
+
+  a.href = url;
+
+  a.download = filename;
+
+
+  document.body.appendChild(a);
+
+
+  a.click();
+
+
+  a.remove();
+
+
+  setTimeout(
+    () =>
+      URL.revokeObjectURL(url),
+    1500
+  );
+
+}
+
+
+/* ==========================================
+   COPY MESSAGE
+========================================== */
+
+async function copyCardText(){
+
+  const name =
+    $('nameInput')
+      .value
+      .trim()
+    || 'Your Name';
+
+
+  const wish =
+    $('wishInput')
+      .value
+      .trim()
+    || 'Happy Birthday!';
+
+
+  const from =
+    $('fromInput')
+      .value
+      .trim()
+    || 'Someone Special';
+
+
+  const text =
+    `🎂 Happy Birthday ${name}!\n\n${wish}\n\nBy ${from}`;
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+
+    toast(
+      'Message copied ✨'
+    );
+
+
+  }catch(e){
+
+    const ta =
+      document.createElement(
+        'textarea'
+      );
+
+
+    ta.value = text;
+
+
+    document.body.appendChild(ta);
+
+
+    ta.select();
+
+
+    document.execCommand(
+      'copy'
+    );
+
+
+    ta.remove();
+
+
+    toast(
+      'Message copied ✨'
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   START APP
+========================================== */
+
+window.addEventListener(
+  'load',
+  init
+);
+
+</script>
+
+</body>
+</html>
