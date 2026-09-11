@@ -1794,7 +1794,7 @@ select:focus{
       target="_blank"
       rel="noopener"
     >
-      @unavailable.prsn
+      @unavai1able.prsn
     </a>
 
   </footer>
@@ -1939,7 +1939,7 @@ function toast(msg){
 
 function init(){
 
-  // Check if opened inside Instagram/Facebook in-app browser and show quick open bar
+  // Check and show top popup banner immediately if opened in Instagram/FB browser
   checkInAppBrowser();
 
   wishes.forEach((w,i)=>{
@@ -1979,7 +1979,7 @@ function init(){
 
 
 /* ==========================================
-   IN-APP BROWSER DETECTOR & OPEN IN CHROME HELPER
+   IN-APP BROWSER DETECTOR & AUTO REDIRECT HELPER
 ========================================== */
 
 function checkInAppBrowser() {
@@ -1989,20 +1989,33 @@ function checkInAppBrowser() {
 
   if (isInstagram || isFacebook) {
     const banner = document.createElement('div');
-    banner.style.cssText = "position:fixed; top:0; left:0; width:100%; background:linear-gradient(135deg, #6366f1, #ec4899); color:#fff; padding:12px 14px; font-size:12px; text-align:center; z-index:99999; box-shadow:0 4px 15px rgba(0,0,0,0.2); font-family:'Plus Jakarta Sans', sans-serif; display:flex; flex-direction:column; gap:6px; align-items:center;";
+    banner.style.cssText = "position:fixed; top:0; left:0; width:100%; background:linear-gradient(135deg, #4f46e5, #ec4899); color:#fff; padding:14px; font-size:12px; text-align:center; z-index:99999; box-shadow:0 6px 20px rgba(0,0,0,0.3); font-family:'Plus Jakarta Sans', sans-serif; display:flex; flex-direction:column; gap:8px; align-items:center;";
     
-    // Attempt to build a direct intent link for Android Chrome / standard external opening
     const currentUrl = window.location.href;
     
     banner.innerHTML = `
-      <span>⚠️ <b>Instagram Browser Detected:</b> Download mein problem ho sakti hai!</span>
-      <div style="display:flex; gap:8px;">
-        <a href="intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end" style="background:#fff; color:#4f46e5; padding:6px 12px; border-radius:6px; text-decoration:none; font-weight:bold; font-size:11px;">🚀 Open in Chrome</a>
-        <button onclick="this.parentElement.parentElement.remove()" style="background:rgba(0,0,0,0.2); color:#fff; border:0; padding:6px 10px; border-radius:6px; font-size:11px; cursor:pointer;">✕ Dismiss</button>
+      <span>⚠️ <b>Instagram Browser Detected!</b> Download mein problem hogi.</span>
+      <b style="font-size:13px;">Chrome ya default browser mein kholne ke liye niche click karein:</b>
+      <div style="display:flex; gap:8px; width:100%; justify-content:center;">
+        <a href="intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end" style="background:#fff; color:#4f46e5; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold; font-size:12px; flex:1; max-width:180px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.2);">🚀 Open in Chrome</a>
+        <button onclick="this.parentElement.parentElement.remove()" style="background:rgba(0,0,0,0.3); color:#fff; border:0; padding:8px 12px; border-radius:8px; font-size:12px; cursor:pointer;">✕ Close</button>
       </div>
     `;
     document.body.prepend(banner);
   }
+}
+
+// Function to handle action intercept for in-app browsers
+function handleInAppAction(actionName) {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isInstagram = (ua.indexOf('Instagram') > -1);
+  const isFacebook = (ua.indexOf('FBAN') > -1) || (ua.indexOf('FBAV') > -1);
+
+  if (isInstagram || isFacebook) {
+    alert(`⚠️ Instagram browser mein ${actionName} kaam nahi karega!\n\nKripya upar diye gaye banner par 'Open in Chrome' button par click karein ya upar right side (...) par click karke 'Open in Browser' select karein.`);
+    return true;
+  }
+  return false;
 }
 
 
@@ -2759,10 +2772,12 @@ async function getShareFile(){
 
 
 /* ==========================================
-   DOWNLOAD CARD (Updated with In-App fallback view)
+   DOWNLOAD CARD
 ========================================== */
 
 async function downloadCard(){
+
+  if(handleInAppAction('Download')) return;
 
   const btn =
     document.querySelector(
@@ -2789,31 +2804,6 @@ async function downloadCard(){
       $('nameInput').value
       || 'Card';
 
-    const dataUrl = canvas.toDataURL('image/png');
-
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
-    const isInApp = (ua.indexOf('Instagram') > -1) || (ua.indexOf('FBAN') > -1) || (ua.indexOf('FBAV') > -1);
-
-    if (isInApp) {
-      setLoading(false);
-      btn.classList.remove('busy');
-      
-      let win = window.open();
-      if (win) {
-        win.document.write(`
-          <title>Wish Craft - Download Image</title>
-          <body style="margin:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; color:#fff; font-family:sans-serif; text-align:center; padding:20px;">
-            <p style="margin-bottom:15px; font-size:15px;">👇 Image taiyar hai! Neeche di gayi image par <b>long-press</b> karke <b>"Download Image"</b> save karein:</p>
-            <img src="${dataUrl}" style="max-width:100%; height:auto; border-radius:12px; box-shadow:0 4px 20px rgba(255,255,255,0.2);" />
-            <br><br>
-            <a href="${dataUrl}" download="WishCraft-${safeFileName(name)}.png" style="background:#6366f1; color:#fff; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:bold;">Direct Download Link</a>
-          </body>
-        `);
-        toast('Image open ho gayi hai. Long-press karke save karein!');
-        return;
-      }
-    }
-
 
     const link =
       document.createElement('a');
@@ -2823,7 +2813,10 @@ async function downloadCard(){
       `WishCraft-${safeFileName(name)}.png`;
 
 
-    link.href = dataUrl;
+    link.href =
+      canvas.toDataURL(
+        'image/png'
+      );
 
 
     document.body.appendChild(link);
@@ -2866,6 +2859,8 @@ async function downloadCard(){
 ========================================== */
 
 async function shareCard(){
+
+  if(handleInAppAction('Sharing')) return;
 
   const btn =
     document.querySelectorAll(
@@ -3014,6 +3009,8 @@ async function shareCard(){
 
 async function shareWhatsApp(){
 
+  if(handleInAppAction('WhatsApp Sharing')) return;
+
   const btn =
     document.querySelectorAll(
       '.small-btn'
@@ -3133,18 +3130,10 @@ async function shareWhatsApp(){
 
   }catch(e){
 
-    if(
+    (
       e &&
       e.name !== 'AbortError'
-    ){
-
-      console.error(e);
-
-      toast(
-        'WhatsApp sharing failed'
-      );
-
-    }
+    ) && console.error(e);
 
   }finally{
 
